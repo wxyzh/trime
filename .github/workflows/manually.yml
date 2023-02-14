@@ -66,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: trime_arm64_v8a
-          path: app/build/outputs/apk/**/*arm64-v8a-debug.apk
+          path: app/build/outputs/apk/**/*arm64-v8a*.apk
           # keep 90 days
           retention-days: 90
 
@@ -74,6 +74,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: librime_jni
-          path: app/build/intermediates/stripped_native_libs/debug/out/lib/*
+          path: app/build/intermediates/stripped_native_libs/*/out/lib/*
           # keep 90 days
           retention-days: 90
