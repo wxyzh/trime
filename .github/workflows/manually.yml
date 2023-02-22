@@ -1,7 +1,7 @@
 name: Manually
 on: workflow_dispatch
 env:
-  CI_NAME: Manually
+  CI_NAME: Commit CI
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,10 +29,17 @@ jobs:
           key: jni-debug-${{ steps.cache-hash.outputs.hash }}
 
       - name: Fetch submodules
-        if: ${{ !steps.jni-cache.outputs.cache-hit }}
+        #if: ${{ !steps.jni-cache.outputs.cache-hit }}
         run: |
           git submodule update --init --recursive
-
+          
+          
+      - name: Decode Base65
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'keystore/test.keystore'
+          encodedString: ${{ secrets.KEYSTORE }}
+      
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -52,7 +59,7 @@ jobs:
 
       - name: Add JNI cache
         if: ${{ !steps.jni-cache.outputs.cache-hit }}
-        run: cp -R app/build/intermediates/stripped_native_libs/debug/out/lib app/prebuilt
+        run: cp -R app/build/intermediates/stripped_native_libs/*/out/lib app/prebuilt
 
       - name: Upload Trime artifact
         uses: actions/upload-artifact@v3
@@ -66,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: trime_arm64_v8a
-          path: app/build/outputs/apk/**/*arm64-v8a*.apk
+          path: app/build/outputs/apk/**/*arm64-v8a-debug.apk
           # keep 90 days
           retention-days: 90
 
@@ -74,6 +81,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: librime_jni
-          path: app/build/intermediates/stripped_native_libs/*/out/lib/*
+          path: app/build/intermediates/stripped_native_libs/debug/out/lib/*
           # keep 90 days
           retention-days: 90
