@@ -196,7 +196,7 @@ public class Rime {
   }
 
   public Rime(boolean full_check) {
-    init(full_check);
+    startup(full_check);
     self = this;
   }
 
@@ -213,7 +213,7 @@ public class Rime {
     return getRimeStatus(mStatus);
   }
 
-  private static void init(boolean full_check) {
+  private static void startup(boolean full_check) {
     isHandlingRimeNotification = false;
 
     DataManager.sync();
@@ -223,11 +223,11 @@ public class Rime {
 
     Timber.i("Starting up Rime APIs ...");
     startupRime(sharedDataDir, userDataDir, full_check);
+  }
 
-    Timber.i("Initializing schema stuffs ...");
-    initSchema();
-
-    Timber.i("Finishing startup");
+  public static void deploy() {
+    exitRime();
+    startup(true);
   }
 
   public static String getCommitText() {
@@ -375,6 +375,11 @@ public class Rime {
     isHandlingRimeNotification = true;
     final RimeEvent event = RimeEvent.create(messageType, messageValue);
     Timber.d("Handling Rime notification: %s", event);
+    if (event instanceof RimeEvent.DeployEvent) {
+      if (((RimeEvent.DeployEvent) event).getMessageValue().equals("success")) {
+        initSchema();
+      }
+    }
     rimeNotiFlow_.tryEmit(event);
     isHandlingRimeNotification = false;
   }
@@ -383,7 +388,7 @@ public class Rime {
   public static native void startupRime(
       @NonNull String sharedDir, @NonNull String userDir, boolean fullCheck);
 
-  public static native void deployRime();
+  public static native void exitRime();
 
   public static native boolean deployRimeSchemaFile(@NonNull String schemaFile);
 
