@@ -224,16 +224,11 @@ public class Rime {
         DataManager.getSharedDataDir().getAbsolutePath(),
         DataManager.getUserDataDir().getAbsolutePath(),
         full_check);
-<<<<<<< HEAD
-  }
-
-=======
 
     Timber.i("Updating schema switchers ...");
     initSchema();
   }
 
->>>>>>> trime-new/data
   public static void deploy() {
     exitRime();
     startup(true);
@@ -384,11 +379,6 @@ public class Rime {
     isHandlingRimeNotification = true;
     final RimeEvent event = RimeEvent.create(messageType, messageValue);
     Timber.d("Handling Rime notification: %s", event);
-    if (event instanceof RimeEvent.DeployEvent) {
-      if (((RimeEvent.DeployEvent) event).getMessageValue().equals("success")) {
-        initSchema();
-      }
-    }
     rimeNotiFlow_.tryEmit(event);
     isHandlingRimeNotification = false;
   }
