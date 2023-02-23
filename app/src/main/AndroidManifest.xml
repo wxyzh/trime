@@ -36,8 +36,7 @@
         android:label="@string/trime_app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_app_icon_round"
-        android:theme="@style/PreferenceTheme"
-        android:requestLegacyExternalStorage="true">
+        android:theme="@style/PreferenceTheme">
 
         <service
             android:name=".TrimeImeService"
