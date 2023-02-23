@@ -13,7 +13,6 @@ import java.util.Properties
 import java.util.TimeZone
 import java.util.Date
 import java.text.SimpleDateFormat
-import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -63,12 +62,6 @@ fun buildInfo(): String {
     return info
 }
 
-val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties = Properties()
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-}
-
 android {
     compileSdk = 33
     ndkVersion = "24.0.8215888"
@@ -90,13 +83,20 @@ android {
 
     signingConfigs {
         create("release") {
-
-          keyAlias = keystoreProperties["keyAlias"] as String
-          keyPassword = keystoreProperties["keyPassword"] as String
-          storeFile = file(keystoreProperties["storeFile"] as String)
-          storePassword = keystoreProperties["storePassword"] as String
+            val keyPropFile = rootProject.file("keystroe.properties")
+            val props = if (keyPropFile.exists()) {
+                Properties().apply { load(keyPropFile.inputStream()) }
+            } else {
+                null
+            }
+            if (props != null && props.contains("storeFile")) {
+                storeFile = rootProject.file((props["storeFile"] as? String) ?: "none")
+                storePassword = props["storePassword"] as? String
+                keyAlias = props["keyAlias"] as? String
+                keyPassword = props["keyPassword"] as? String
             }
         }
+    }
 
     buildTypes {
         release {
