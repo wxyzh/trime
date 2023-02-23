@@ -47,7 +47,7 @@ jobs:
           echo "keyAlias=$SIGNING_KEY_ALIAS" >> /home/runner/work/trime/trime/app/keystore.properties
           echo "storePassword=$SIGNING_STORE_PASSWORD" >> /home/runner/work/trime/trime/app/keystore.properties
           echo "keyPassword=$SIGNING_KEY_PASSWORD" >> /home/runner/work/trime/trime/app/keystore.properties
-          /home/runner/work/trime/trime
+          
         env: 
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
