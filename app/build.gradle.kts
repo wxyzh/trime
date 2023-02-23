@@ -23,6 +23,14 @@ plugins {
     id("com.google.devtools.ksp") version "1.7.20-1.0.8"
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+val keystoreProperties = Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 fun exec(cmd: String): String = ByteArrayOutputStream().use {
     project.exec {
         commandLine = cmd.split(" ")
@@ -84,19 +92,12 @@ android {
 
     signingConfigs {
         create("release") {
-          val keystorePropertiesFile = rootProject.file("keystore.properties")
-          val keystoreProperties = Properties()
-          if (keystorePropertiesFile.exists()) {
-            keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-            }
-          keystoreProperties["storeFile"]?.let {
-          keyAlias = keystoreProperties["keyAlias"].toString()
-          keyPassword = keystoreProperties["keyPassword"].toString()
-          storeFile = file(keystoreProperties["storeFile"].toString())
-          storePassword = keystoreProperties["storePassword"].toString()
+          keyAlias = keystoreProperties["keyAlias"] as String
+          keyPassword = keystoreProperties["keyPassword"] as String
+          storeFile = file(keystoreProperties["storeFile"] as String)
+          storePassword = keystoreProperties["storePassword"] as String
             }
         }
-    }
 
     buildTypes {
         release {
