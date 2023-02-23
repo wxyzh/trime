@@ -224,8 +224,16 @@ public class Rime {
         DataManager.getSharedDataDir().getAbsolutePath(),
         DataManager.getUserDataDir().getAbsolutePath(),
         full_check);
+<<<<<<< HEAD
   }
 
+=======
+
+    Timber.i("Updating schema switchers ...");
+    initSchema();
+  }
+
+>>>>>>> trime-new/data
   public static void deploy() {
     exitRime();
     startup(true);
