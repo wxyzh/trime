@@ -142,7 +142,7 @@ class PrefMainActivity : AppCompatActivity() {
 
     private fun requestExternalStoragePermission() {
         XXPermissions.with(this)
-            .permission(Permission.Group.STORAGE)
+            .permission(Permission.MANAGE_EXTERNAL_STORAGE)
             .request(object : OnPermissionCallback {
                 override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
                     if (all) {
