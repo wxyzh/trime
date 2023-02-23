@@ -90,7 +90,7 @@ android {
     signingConfigs {
         create("release") {
             if (props != null && props.contains("storeFile")) {
-                storeFile = rootProject.file((props["storeFile"] as? String) ?: "none")
+                storeFile = file((props["storeFile"] as? String) ?: "none")
                 storePassword = props["storePassword"] as? String
                 keyAlias = props["keyAlias"] as? String
                 keyPassword = props["keyPassword"] as? String
