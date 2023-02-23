@@ -61,7 +61,13 @@ fun buildInfo(): String {
     println(info)
     return info
 }
-
+val keyPropFile = rootProject.file("keystore.properties")
+val props = if (keyPropFile.exists()) {
+  Properties().apply { load(keyPropFile.inputStream()) }
+} else {
+   null
+   }
+   
 android {
     compileSdk = 33
     ndkVersion = "24.0.8215888"
@@ -83,12 +89,6 @@ android {
 
     signingConfigs {
         create("release") {
-            val keyPropFile = rootProject.file("keystroe.properties")
-            val props = if (keyPropFile.exists()) {
-                Properties().apply { load(keyPropFile.inputStream()) }
-            } else {
-                null
-            }
             if (props != null && props.contains("storeFile")) {
                 storeFile = rootProject.file((props["storeFile"] as? String) ?: "none")
                 storePassword = props["storePassword"] as? String
