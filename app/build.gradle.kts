@@ -92,7 +92,7 @@ android {
           keystoreProperties["storeFile"]?.let {
           keyAlias = keystoreProperties["keyAlias"].toString()
           keyPassword = keystoreProperties["keyPassword"].toString()
-          storeFile = file(it)
+          storeFile = file(keystoreProperties["storeFile"].toString())
           storePassword = keystoreProperties["storePassword"].toString()
             }
         }
