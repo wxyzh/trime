@@ -37,13 +37,13 @@ jobs:
       - name: Decode keystore 
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: 'keystore/test.keystore'
+          fileName: 'keystore/test.jks'
           fileDir: '/home/runner/work/_temp/'
           encodedString: ${{ secrets.KEYSTORE }}
           
       - name: create keystore and properties file for signing the app   
         run: |
-          echo "storeFile=/home/runner/work/_temp/keystore/test.keystore" >> /home/runner/work/trime/trime/app/keystore.properties
+          echo "storeFile=/home/runner/work/_temp/keystore/test.jks" >> /home/runner/work/trime/trime/app/keystore.properties
           echo "keyAlias=$SIGNING_KEY_ALIAS" >> /home/runner/work/trime/trime/app/keystore.properties
           echo "storePassword=$SIGNING_STORE_PASSWORD" >> /home/runner/work/trime/trime/app/keystore.properties
           echo "keyPassword=$SIGNING_KEY_PASSWORD" >> /home/runner/work/trime/trime/app/keystore.properties
