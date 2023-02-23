@@ -48,7 +48,6 @@ jobs:
           echo "storePassword=$SIGNING_STORE_PASSWORD" >> /home/runner/work/trime/trime/app/keystore.properties
           echo "keyPassword=$SIGNING_KEY_PASSWORD" >> /home/runner/work/trime/trime/app/keystore.properties
           ls /home/runner/work/trime/trime/app
-          ls /home/runner/work/_temp/keystore/test.keystore
           cat /home/runner/work/trime/trime/app/keystore.properties
           
         env: 
