@@ -144,7 +144,7 @@ class PrefMainActivity : AppCompatActivity() {
         XXPermissions.with(this)
             .permission(Permission.MANAGE_EXTERNAL_STORAGE)
             .request(new OnPermissionCallback {
-                override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
+                override fun onGranted(permissions: MutableList<String>?, permissions: Boolean) {
                     if (all) {
                         ToastUtils.showShort(R.string.external_storage_permission_granted)
                         SoundThemeManager.init()
