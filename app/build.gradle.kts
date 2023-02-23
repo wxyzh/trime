@@ -68,13 +68,8 @@ android {
 
     defaultConfig {
         applicationId  = "com.osfans.trime"
-<<<<<<< HEAD
-        minSdk = 29
-        targetSdk =  31
-=======
         minSdk = 21
         targetSdk =  29
->>>>>>> trime-new/data
         versionCode = 20230301
         versionName = "3.2.11"
 
@@ -88,11 +83,7 @@ android {
 
     signingConfigs {
         create("release") {
-<<<<<<< HEAD
             val keyPropFile = rootProject.file("keystore.properties")
-=======
-            val keyPropFile = rootProject.file("keystroe.properties")
->>>>>>> trime-new/data
             val props = if (keyPropFile.exists()) {
                 Properties().apply { load(keyPropFile.inputStream()) }
             } else {
