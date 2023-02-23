@@ -205,7 +205,7 @@ dependencies {
     implementation("com.blankj:utilcodex:1.31.1")
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("cat.ereza:customactivityoncrash:2.4.0")
-    implementation("com.github.getActivity:XXPermissions:16.2")
+    implementation("com.github.getActivity:XXPermissions:16.6")
     implementation("com.charleskorn.kaml:kaml:0.49.0")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.5.1")
