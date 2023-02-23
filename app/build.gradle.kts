@@ -87,7 +87,10 @@ android {
             val props = if (keyPropFile.exists()) {
                 Properties().apply { load(keyPropFile.inputStream()) }
             } else {
-                null
+               keyAlias System.getenv("SIGNING_KEY_ALIAS")
+               keyPassword System.getenv("SIGNING_STORE_PASSWORD")
+               storeFile file("/home/runner/work/_temp/keystore/test.jks")
+               storePassword System.getenv("SIGNING_KEY_PASSWORD")
             }
             if (props != null && props.contains("storeFile")) {
                 storeFile = rootProject.file((props["storeFile"] as? String) ?: "none")
