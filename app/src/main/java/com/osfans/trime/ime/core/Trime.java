@@ -1224,7 +1224,6 @@ public class Trime extends LifecycleInputMethodService {
     if (mainKeyboardView != null) mainKeyboardView.invalidateComposingKeys();
     if (!onEvaluateInputViewShown())
       setCandidatesViewShown(textInputManager.isComposable()); // 實體鍵盤打字時顯示候選欄
-    if (symbolKeyboardType != SymbolKeyboardType.CANDIDATE) selectLiquidKeyboard(-1);
 
     return startNum;
   }
