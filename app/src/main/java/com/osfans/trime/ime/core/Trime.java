@@ -1217,7 +1217,7 @@ public class Trime extends LifecycleInputMethodService {
           mCandidate.setText(startNum);
           // if isCursorUpdated, showCompositionView will be called in onUpdateCursorAnchorInfo
           // otherwise we need to call it here
-          if (!isCursorUpdated) showCompositionView(true);
+          if (!isCursorUpdated) showCompositionView();
         }
       } else {
         mCandidate.setText(0);
