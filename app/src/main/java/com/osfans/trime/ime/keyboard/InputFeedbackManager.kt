@@ -46,12 +46,12 @@ class InputFeedbackManager(
         if (prefs.keyboard.soundEnabled) {
             SoundThemeManager.getActiveSoundFilePaths().onSuccess { path ->
                 soundPool = SoundPool.Builder()
-                        .setMaxStreams(1)
-                        .setAudioAttributes(
-                                AudioAttributes.Builder()
-                                        .setLegacyStreamType(AudioManager.STREAM_SYSTEM)
-                                        .build()
-                        ).build()
+                    .setMaxStreams(1)
+                    .setAudioAttributes(
+                            AudioAttributes.Builder()
+                                    .setLegacyStreamType(AudioManager.STREAM_SYSTEM)
+                                    .build()
+                    ).build()
                 soundIds.clear()
                 soundIds.addAll(path.map { soundPool!!.load(it, 1) })
             }
