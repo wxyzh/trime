@@ -48,9 +48,9 @@ class InputFeedbackManager(
                 soundPool = SoundPool.Builder()
                     .setMaxStreams(1)
                     .setAudioAttributes(
-                            AudioAttributes.Builder()
-                                    .setLegacyStreamType(AudioManager.STREAM_SYSTEM)
-                                    .build()
+                        AudioAttributes.Builder()
+                            .setLegacyStreamType(AudioManager.STREAM_SYSTEM)
+                            .build()
                     ).build()
                 soundIds.clear()
                 soundIds.addAll(path.map { soundPool!!.load(it, 1) })
