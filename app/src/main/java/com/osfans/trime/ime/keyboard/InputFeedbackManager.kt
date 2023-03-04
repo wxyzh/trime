@@ -33,7 +33,7 @@ class InputFeedbackManager(
 
     init {
         try {
-            if (prefs.keyboard.soundEnabled) {
+            if (prefs.keyboard.soundEnabled && prefs.keyboard.customSoundEnabled) {
                 tts = TextToSpeech(ims) { }
                 SoundThemeManager.init()
             }
@@ -43,7 +43,7 @@ class InputFeedbackManager(
     }
 
     fun resumeSoundPool() {
-        if (prefs.keyboard.soundEnabled) {
+        if (prefs.keyboard.soundEnabled && prefs.keyboard.customSoundEnabled) {
             SoundThemeManager.getActiveSoundFilePaths().onSuccess { path ->
                 soundPool = SoundPool.Builder()
                     .setMaxStreams(1)
@@ -59,7 +59,7 @@ class InputFeedbackManager(
     }
 
     fun releaseSoundPool() {
-        if (prefs.keyboard.soundEnabled) {
+        if (prefs.keyboard.soundEnabled && prefs.keyboard.customSoundEnabled) {
             SoundThemeManager.getActiveSoundTheme().onSuccess {
                 soundPool?.release()
                 soundPool = null
