@@ -33,31 +33,39 @@ class InputFeedbackManager(
 
     init {
         try {
-            tts = TextToSpeech(ims) { }
-            SoundThemeManager.init()
+            if (prefs.keyboard.soundEnabled && prefs.keyboard.customSoundEnabled) {
+                tts = TextToSpeech(ims) { }
+                SoundThemeManager.init()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     fun resumeSoundPool() {
-        SoundThemeManager.getActiveSoundFilePaths().onSuccess { path ->
-            soundPool = SoundPool.Builder()
-                .setMaxStreams(1)
-                .setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setLegacyStreamType(AudioManager.STREAM_SYSTEM)
-                        .build()
-                ).build()
-            soundIds.clear()
-            soundIds.addAll(path.map { soundPool!!.load(it, 1) })
+        if (prefs.keyboard.soundEnabled && prefs.keyboard.customSoundEnabled) {
+            SoundThemeManager.getActiveSoundFilePaths().onSuccess { path ->
+                soundPool = SoundPool.Builder()
+                    .setMaxStreams(1)
+                    .setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setLegacyStreamType(AudioManager.STREAM_SYSTEM)
+                            .build()
+                    ).build()
+                soundIds.clear()
+                soundIds.addAll(path.map { soundPool!!.load(it, 1) })
+            }
         }
     }
 
     fun releaseSoundPool() {
-        SoundThemeManager.getActiveSoundTheme().onSuccess {
-            soundPool?.release()
-            soundPool = null
+        if (prefs.keyboard.soundEnabled && prefs.keyboard.customSoundEnabled) {
+            SoundThemeManager.getActiveSoundTheme().onSuccess {
+                if (soundPool != null) {
+                    soundPool!!.release()
+                    soundPool = null
+                }
+            }
         }
     }
 
