@@ -61,8 +61,10 @@ class InputFeedbackManager(
     fun releaseSoundPool() {
         if (prefs.keyboard.soundEnabled && prefs.keyboard.customSoundEnabled) {
             SoundThemeManager.getActiveSoundTheme().onSuccess {
-                soundPool?.release()
-                soundPool = null
+                if (soundPool != null) {
+                    soundPool.release()
+                    soundPool = null
+                }
             }
         }
     }
