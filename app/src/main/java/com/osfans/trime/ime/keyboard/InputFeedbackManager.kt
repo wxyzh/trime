@@ -62,7 +62,7 @@ class InputFeedbackManager(
         if (prefs.keyboard.soundEnabled && prefs.keyboard.customSoundEnabled) {
             SoundThemeManager.getActiveSoundTheme().onSuccess {
                 if (soundPool != null) {
-                    soundPool.release()
+                    soundPool!!.release()
                     soundPool = null
                 }
             }
