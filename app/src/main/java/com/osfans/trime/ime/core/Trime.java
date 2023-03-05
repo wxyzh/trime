@@ -869,7 +869,9 @@ public class Trime extends LifecycleInputMethodService {
     // Dismiss any pop-ups when the input-view is being finished and hidden.
     mainKeyboardView.closing();
     performEscape();
-    inputFeedbackManager.releaseSoundPool();
+    if (!(inputFeedbackManager = null)) {
+      inputFeedbackManager.releaseSoundPool();
+    }
     try {
       hideCompositionView();
     } catch (Exception e) {
