@@ -92,8 +92,8 @@ android {
         create("release") {
             /* val keyPropFile = rootProject.file("keystore.properties")
              if (keyPropFile.exists()) {
-                 val keystoreProperties = Properties() */
-            keystoreProperties.load(FileInputStream(keyPropFile))
+                 val keystoreProperties = Properties()
+            keystoreProperties.load(FileInputStream(keyPropFile)) */
             keyAlias = keystoreProperties["keyAlias"] as String
             keyPassword = keystoreProperties["keyPassword"] as String
             storeFile = file(keystoreProperties["storeFile"] as String)
