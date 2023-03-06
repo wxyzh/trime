@@ -13,6 +13,7 @@ import java.util.Properties
 import java.util.TimeZone
 import java.util.Date
 import java.text.SimpleDateFormat
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -61,13 +62,14 @@ fun buildInfo(): String {
     println(info)
     return info
 }
-val keyPropFile = rootProject.file("keystore.properties")
-val props = if (keyPropFile.exists()) {
-  Properties().apply { load(keyPropFile.inputStream()) }
-} else {
-   null
-   }
-   
+
+/* val keyPropFile = rootProject.file("keystore.properties")
+if (keyPropFile.exists()) {
+    val keystoreProperties = Properties()
+    keystoreProperties.load(FileInputStream(keyPropFile))
+}
+*/
+
 android {
     compileSdk = 33
     ndkVersion = "24.0.8215888"
@@ -89,18 +91,20 @@ android {
 
     signingConfigs {
         create("release") {
-            if (props != null && props.contains("storeFile")) {
-                storeFile = file((props["storeFile"] as? String) ?: "none")
-                storePassword = props["storePassword"] as? String
-                keyAlias = props["keyAlias"] as? String
-                keyPassword = props["keyPassword"] as? String
-            }
-            
-          keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-          keyPassword = System.getenv("SIGNING_STORE_PASSWORD")
-          storeFile = file("/home/runner/work/_temp/keystore/test.jks")
-          storePassword = System.getenv("SIGNING_KEY_PASSWORD")
-            
+            val keyPropFile = rootProject.file("keystore.properties")
+            if (keyPropFile.exists()) {
+                val keystoreProperties = Properties()
+                keystoreProperties.load(FileInputStream(keyPropFile))
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+            } /* else {
+                     keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+                     keyPassword = System.getenv("SIGNING_STORE_PASSWORD")
+                     storeFile = file("/home/runner/work/_temp/keystore/test.jks")
+                     storePassword = System.getenv("SIGNING_KEY_PASSWORD")
+                 } */
         }
     }
 

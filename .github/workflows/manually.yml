@@ -43,12 +43,12 @@ jobs:
           
       - name: create keystore and properties file for signing the app   
         run: |
-          echo "storeFile=/home/runner/work/_temp/keystore/test.jks" >> /home/runner/work/trime/trime/app/keystore.properties
-          echo "keyAlias=$SIGNING_KEY_ALIAS" >> /home/runner/work/trime/trime/app/keystore.properties
-          echo "storePassword=$SIGNING_STORE_PASSWORD" >> /home/runner/work/trime/trime/app/keystore.properties
-          echo "keyPassword=$SIGNING_KEY_PASSWORD" >> /home/runner/work/trime/trime/app/keystore.properties
-          ls /home/runner/work/trime/trime/app
-          cat /home/runner/work/trime/trime/app/keystore.properties
+          echo "storeFile=/home/runner/work/_temp/keystore/test.jks" >> /home/runner/work/trime/trime/keystore.properties
+          echo "keyAlias=$SIGNING_KEY_ALIAS" >> /home/runner/work/trime/trime/keystore.properties
+          echo "storePassword=$SIGNING_STORE_PASSWORD" >> /home/runner/work/trime/trime/keystore.properties
+          echo "keyPassword=$SIGNING_KEY_PASSWORD" >> /home/runner/work/trime/trime/keystore.properties
+          #ls /home/runner/work/trime/trime/app
+          #cat /home/runner/work/trime/trime/app/keystore.properties
           
         env: 
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
