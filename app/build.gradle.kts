@@ -101,7 +101,7 @@ android {
                 keyPassword = System.getenv("SIGNING_STORE_PASSWORD")
                 storeFile = file("/home/runner/work/_temp/keystore/test.jks")
                 storePassword = System.getenv("SIGNING_KEY_PASSWORD")
-            } 
+            }
         }
     }
 
