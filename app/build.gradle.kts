@@ -64,10 +64,10 @@ fun buildInfo(): String {
 }
 
 val keyPropFile = rootProject.file("keystore.properties")
-if (keyPropFile.exists()) {
-    val keystoreProperties = Properties()
-    keystoreProperties.load(FileInputStream(keyPropFile))
-}
+//if (keyPropFile.exists()) {
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keyPropFile))
+// }
    
 android {
     compileSdk = 33
