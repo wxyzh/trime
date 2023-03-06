@@ -64,10 +64,10 @@ fun buildInfo(): String {
 }
 
 val keyPropFile = rootProject.file("keystore.properties")
-//if (keyPropFile.exists()) {
-val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keyPropFile))
-// }
+if (keyPropFile.exists()) {
+    val keystoreProperties = Properties()
+    keystoreProperties.load(FileInputStream(keyPropFile))
+}
    
 android {
     compileSdk = 33
@@ -90,22 +90,22 @@ android {
 
     signingConfigs {
         create("release") {
-            /* val keyPropFile = rootProject.file("keystore.properties")
-             if (keyPropFile.exists()) {
-                 val keystoreProperties = Properties()
-            keystoreProperties.load(FileInputStream(keyPropFile)) */
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
-            /* }  else {
-                 keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-                 keyPassword = System.getenv("SIGNING_STORE_PASSWORD")
-                 storeFile = file("/home/runner/work/_temp/keystore/test.jks")
-                 storePassword = System.getenv("SIGNING_KEY_PASSWORD")
-             } */
+            // val keyPropFile = rootProject.file("keystore.properties")
+            if (keyPropFile.exists()) {
+                //   val keystoreProperties = Properties()
+                // keystoreProperties.load(FileInputStream(keyPropFile))
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                /* }  else {
+                     keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+                     keyPassword = System.getenv("SIGNING_STORE_PASSWORD")
+                     storeFile = file("/home/runner/work/_temp/keystore/test.jks")
+                     storePassword = System.getenv("SIGNING_KEY_PASSWORD")
+                 } */
+            }
         }
-    }
 
     buildTypes {
         release {
