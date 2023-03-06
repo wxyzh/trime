@@ -98,14 +98,14 @@ android {
                 keyPassword = keystoreProperties["keyPassword"] as String
                 storeFile = file(keystoreProperties["storeFile"] as String)
                 storePassword = keystoreProperties["storePassword"] as String
-                /* }  else {
+            } /* else {
                      keyAlias = System.getenv("SIGNING_KEY_ALIAS")
                      keyPassword = System.getenv("SIGNING_STORE_PASSWORD")
                      storeFile = file("/home/runner/work/_temp/keystore/test.jks")
                      storePassword = System.getenv("SIGNING_KEY_PASSWORD")
                  } */
-            }
         }
+    }
 
     buildTypes {
         release {
