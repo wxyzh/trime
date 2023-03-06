@@ -96,12 +96,12 @@ android {
                 storePassword = props["storePassword"] as? String
                 keyAlias = props["keyAlias"] as? String
                 keyPassword = props["keyPassword"] as? String
-            } /* else {
+            }  else {
                 keyAlias = System.getenv("SIGNING_KEY_ALIAS")
                 keyPassword = System.getenv("SIGNING_STORE_PASSWORD")
                 storeFile = file("/home/runner/work/_temp/keystore/test.jks")
                 storePassword = System.getenv("SIGNING_KEY_PASSWORD")
-            } */
+            } 
         }
     }
 
