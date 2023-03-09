@@ -55,7 +55,7 @@ object SchemaManager {
     fun toggleSwitchOption(index: Int) {
         if (!this::visibleSwitches.isInitialized || visibleSwitches.isEmpty()) return
         val switch = visibleSwitches[index]
-        val enabled = switch.enabled
+        val enabled = if (switch.enabled < 0) 0 else switch.enabled
         val next: Int
         if (switch.options.isEmpty()) {
             next = 1 - switch.enabled
@@ -74,7 +74,7 @@ object SchemaManager {
         if (!this::visibleSwitches.isInitialized || visibleSwitches.isEmpty()) return arrayOf()
         return Array(visibleSwitches.size) {
             val switch = visibleSwitches[it]
-            val enabled = switch.enabled
+            val enabled = if (switch.enabled < 0) 0 else switch.enabled
             val text = switch.states[enabled]
             val comment = if (switch.options.isEmpty()) {
                 "${if (arrow) "→ " else ""}${switch.states[1 - enabled]}"
