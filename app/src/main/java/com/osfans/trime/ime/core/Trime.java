@@ -1003,9 +1003,13 @@ public class Trime extends LifecycleInputMethodService {
     }
 
     final int unicodeChar = event.getUnicodeChar();
-    int mask = event.getMetaState();
-    if (unicodeChar > 0) {
-      keyCode = unicodeChar;
+    final String s = String.valueOf((char) unicodeChar);
+    final int i = Event.getClickCode(s);
+    int mask = 0;
+    if (i > 0) {
+      keyCode = i;
+    } else { // 空格、回車等
+      mask = event.getMetaState();
     }
     final boolean ret = handleKey(keyCode, mask);
     if (isComposing()) setCandidatesViewShown(textInputManager.isComposable()); // 藍牙鍵盤打字時顯示候選欄
@@ -1205,11 +1209,9 @@ public class Trime extends LifecycleInputMethodService {
         Timber.d("updateComposing() SymbolKeyboardType=%s", symbolKeyboardType.toString());
         if (symbolKeyboardType != SymbolKeyboardType.NO_KEY
             && symbolKeyboardType != SymbolKeyboardType.CANDIDATE) {
-          mComposition.setWindow();
-          showCompositionView(false);
-          return 0;
+          mComposition.getRootView().setVisibility(View.GONE);
         } else {
-
+          mComposition.getRootView().setVisibility(View.VISIBLE);
           startNum = mComposition.setWindow(minPopupSize, minPopupCheckSize, Integer.MAX_VALUE);
           mCandidate.setText(startNum);
           // if isCursorUpdated, showCompositionView will be called in onUpdateCursorAnchorInfo
