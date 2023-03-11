@@ -621,7 +621,6 @@ public class KeyboardView extends View implements View.OnClickListener {
     List<Key> keys = mKeyboard.getKeys();
     mKeys = keys.toArray(new Key[keys.size()]);
     setKeyboardBackground();
-    requestLayout(); // 重新调整键盘大小
     // Hint to reallocate the buffer if the size changed
     mKeyboardChanged = true;
     invalidateAllKeys();
