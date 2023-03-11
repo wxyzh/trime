@@ -10,7 +10,7 @@ plugins {
     id("com.android.application") version "7.4.0" apply false
     id("com.android.library") version "7.4.0" apply false
     kotlin("android") version Extra.kotlinVersion apply false
-    id("com.diffplug.spotless") version "6.3.0"
+    id("com.diffplug.spotless") version "6.16.0"
 }
 
 spotless {
@@ -18,17 +18,13 @@ spotless {
         importOrder()
         removeUnusedImports()
         target("app/src/main/java/com/osfans/trime/**/*.java")
-        googleJavaFormat("1.15.0")
+        googleJavaFormat("1.16.0")
     }
     kotlin {
         target("app/src/main/java/com/osfans/trime/**/*.kt")
-        ktlint("0.44.0")
+        ktlint("0.48.2")
         trimTrailingWhitespace()
         indentWithSpaces()
         endWithNewline()
     }
-}
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
 }
