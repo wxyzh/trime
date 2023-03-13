@@ -501,12 +501,12 @@ public class KeyboardView extends View implements View.OnClickListener {
                 //  and default value of getSwipeVelocityHi() is 25000,
                 //  so for most of the users that judgment is always true
                 if ((deltaX > travel || velocityX > velocity)
-                    && (absY < absX
-                    || (deltaY > 0
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_UP.ordinal()] == null)
-                    || (deltaY < 0
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()] == null))
-                ) {
+                        && (absY < absX
+                            || (deltaY > 0
+                        && mKeys[mDownKey].events[KeyEventType.SWIPE_UP.ordinal()] == null)
+                            || (deltaY < 0
+                        && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()]
+                            == null))) {
                   // I should have implement mDisambiguateSwipe as a config option, but the logic
                   // here is really weird, and I don't really know
                   // when it is enabled what should be the behavior, so I just left it always false.
@@ -519,11 +519,12 @@ public class KeyboardView extends View implements View.OnClickListener {
                     type = KeyEventType.SWIPE_RIGHT;
                   }
                 } else if ((deltaX < -travel || velocityX < -velocity)
-                    && (absY < absX
-                    || (deltaY > 0
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_UP.ordinal()] == null)
-                    || (deltaY < 0
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()] == null))
+                        && (absY < absX
+                            || (deltaY > 0
+                        && mKeys[mDownKey].events[KeyEventType.SWIPE_UP.ordinal()] == null)
+                            || (deltaY < 0
+                        && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()]
+                            == null))
                 ) {
                   if (mDisambiguateSwipe && endingVelocityX < velocityX / 4) {
                     return true;
@@ -532,12 +533,12 @@ public class KeyboardView extends View implements View.OnClickListener {
                     type = KeyEventType.SWIPE_LEFT;
                   }
                 } else if ((deltaY < -travel || velocityY < -velocity)
-                    && (absX < absY
-                    || (deltaX > 0
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_RIGHT.ordinal()] == null)
-                    || (deltaX < 0
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()] == null))
-                ) {
+                        && (absX < absY
+                            || (deltaX > 0
+                        && mKeys[mDownKey].events[KeyEventType.SWIPE_RIGHT.ordinal()] == null)
+                            || (deltaX < 0
+                        && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()]
+                            == null))) {
                   if (mDisambiguateSwipe && endingVelocityY < velocityY / 4) {
                     return true;
                   } else {
@@ -545,12 +546,12 @@ public class KeyboardView extends View implements View.OnClickListener {
                     type = KeyEventType.SWIPE_UP;
                   }
                 } else if ((deltaY > travel || velocityY > velocity)
-                    && (absX < absY
-                    || (deltaX > 0
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_RIGHT.ordinal()] == null)
-                    || (deltaX < 0
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()] == null))
-                ) {
+                        && (absX < absY
+                            || (deltaX > 0
+                        && mKeys[mDownKey].events[KeyEventType.SWIPE_RIGHT.ordinal()] == null)
+                            || (deltaX < 0
+                        && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()]
+                            == null))) {
                   if (mDisambiguateSwipe && endingVelocityY > velocityY / 4) {
                     return true;
                   } else {
