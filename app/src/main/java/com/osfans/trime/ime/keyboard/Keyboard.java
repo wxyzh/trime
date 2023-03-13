@@ -97,9 +97,9 @@ public class Keyboard {
   public Keyboard() {
 
     // 橫屏模式下，键盘左右两侧到屏幕边缘的距离
-
+    boolean land_mode = ScreenUtils.isLandscape();
     final Config config = Config.get();
-    int[] keyboardPadding = config.getKeyboardPadding();
+    int[] keyboardPadding = config.getKeyboardPadding(land_mode);
     mDisplayWidth = ScreenUtils.getScreenWidth() - keyboardPadding[0] - keyboardPadding[1];
     /* Height of the screen */
     // final int mDisplayHeight = dm.heightPixels;
@@ -117,7 +117,7 @@ public class Keyboard {
     mBackground = config.colors.getDrawable("keyboard_back_color");
 
     keyboardHeight = (int) DimensionsKt.dp2px(config.style.getFloat("keyboard_height"));
-    if (ScreenUtils.isLandscape()) {
+    if (land_mode) {
       int keyBoardHeightLand =
           (int) DimensionsKt.dp2px(config.style.getFloat("keyboard_height_land"));
       if (keyBoardHeightLand > 0) keyboardHeight = keyBoardHeightLand;
