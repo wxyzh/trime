@@ -505,8 +505,8 @@ public class KeyboardView extends View implements View.OnClickListener {
                         || (deltaY > 0
                             && mKeys[mDownKey].events[KeyEventType.SWIPE_UP.ordinal()] == null)
                         || (deltaY < 0
-                            && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()] == null))
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_RIGHT.ordinal()] != null) {
+                            && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()]
+                                == null))) {
                   // I should have implement mDisambiguateSwipe as a config option, but the logic
                   // here is really weird, and I don't really know
                   // when it is enabled what should be the behavior, so I just left it always false.
@@ -523,8 +523,8 @@ public class KeyboardView extends View implements View.OnClickListener {
                         || (deltaY > 0
                             && mKeys[mDownKey].events[KeyEventType.SWIPE_UP.ordinal()] == null)
                         || (deltaY < 0
-                            && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()] == null))
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()] != null) {
+                            && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()]
+                                == null))) {
                   if (mDisambiguateSwipe && endingVelocityX < velocityX / 4) {
                     return true;
                   } else {
@@ -536,8 +536,8 @@ public class KeyboardView extends View implements View.OnClickListener {
                         || (deltaX > 0
                             && mKeys[mDownKey].events[KeyEventType.SWIPE_RIGHT.ordinal()] == null)
                         || (deltaX < 0
-                            && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()] == null))
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_UP.ordinal()] != null) {
+                            && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()]
+                                == null))) {
                   if (mDisambiguateSwipe && endingVelocityY < velocityY / 4) {
                     return true;
                   } else {
@@ -549,8 +549,8 @@ public class KeyboardView extends View implements View.OnClickListener {
                         || (deltaX > 0
                             && mKeys[mDownKey].events[KeyEventType.SWIPE_RIGHT.ordinal()] == null)
                         || (deltaX < 0
-                            && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()] == null))
-                    && mKeys[mDownKey].events[KeyEventType.SWIPE_DOWN.ordinal()] != null) {
+                            && mKeys[mDownKey].events[KeyEventType.SWIPE_LEFT.ordinal()]
+                                == null))) {
                   if (mDisambiguateSwipe && endingVelocityY > velocityY / 4) {
                     return true;
                   } else {
