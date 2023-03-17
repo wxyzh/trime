@@ -7,10 +7,11 @@
  */
 
 plugins {
-    id("com.android.application") version "7.4.0" apply false
-    id("com.android.library") version "7.4.0" apply false
+    id("com.android.application") version "7.4.2" apply false
+    id("com.android.library") version "7.4.2" apply false
     kotlin("android") version Extra.kotlinVersion apply false
-    id("com.diffplug.spotless") version "6.16.0"
+    id("com.diffplug.spotless") version "6.17.0"
+    id("com.mikepenz.aboutlibraries.plugin") version "10.6.1" apply false
 }
 
 spotless {

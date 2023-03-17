@@ -17,9 +17,9 @@ import java.text.SimpleDateFormat
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("com.cookpad.android.plugin.license-tools") version "1.2.8"
-    kotlin("plugin.serialization") version "1.7.20"
-    id("com.google.devtools.ksp") version "1.7.20-1.0.8"
+    kotlin("plugin.serialization") version "1.8.0"
+    id("com.google.devtools.ksp") version "1.8.0-1.0.8"
+    id("com.mikepenz.aboutlibraries.plugin")
 }
 
 fun exec(cmd: String): String = ByteArrayOutputStream().use {
@@ -137,8 +137,8 @@ android {
     }
 
     // hack workaround lint gradle 8.0.2
-    lintOptions {
-        isCheckReleaseBuilds = false
+    lint {
+        checkReleaseBuilds = false
     }
 
     externalNativeBuild {
@@ -174,6 +174,14 @@ kotlin {
     }
 }
 
+aboutLibraries {
+    configPath = "app/licenses"
+    excludeFields = arrayOf("generated", "developers", "organization", "scm", "funding", "content")
+    fetchRemoteLicense = false
+    fetchRemoteFunding = false
+    includePlatform = false
+}
+
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
@@ -181,7 +189,6 @@ ksp {
 val generateDataChecksum by tasks.register<DataChecksumsTask>("generateDataChecksum") {
     inputDir.set(file("src/main/assets"))
     outputFile.set(file("src/main/assets/checksums.json"))
-    dependsOn(tasks.findByName("generateLicenseJson"))
 }
 
 android.applicationVariants.all {
@@ -191,7 +198,6 @@ android.applicationVariants.all {
 
 tasks.register<Delete>("cleanGeneratedAssets") {
     delete(file("src/main/assets/checksums.json"))
-    delete(file("src/main/assets/licenses.json"))
 }.also { tasks.clean.dependsOn(it) }
 
 tasks.register<Delete>("cleanCxxIntermediates") {
@@ -203,20 +209,21 @@ dependencies {
     implementation("com.blankj:utilcodex:1.31.1")
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("cat.ereza:customactivityoncrash:2.4.0")
-    implementation("com.github.getActivity:XXPermissions:16.8")
-    implementation("com.charleskorn.kaml:kaml:0.49.0")
+    implementation("com.github.getActivity:XXPermissions:16.2")
+    implementation("com.charleskorn.kaml:kaml:0.52.0")
+    implementation("com.mikepenz:aboutlibraries-core:10.6.1")
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.appcompat:appcompat:1.6.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
-    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.fragment:fragment-ktx:1.5.4")
     implementation("androidx.navigation:navigation-fragment-ktx:${Extra.navVersion}")
     implementation("androidx.navigation:navigation-ui-ktx:${Extra.navVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Extra.kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Extra.kotlinCoroutinesVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Extra.kotlinCoroutinesVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation("com.louiscad.splitties:splitties-bitflags:${Extra.splittiesVersion}")
     implementation("com.louiscad.splitties:splitties-systemservices:${Extra.splittiesVersion}")
