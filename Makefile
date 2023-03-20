@@ -33,8 +33,7 @@ debug: style-lint
 	./gradlew assembleDebug
 
 TRANSLATE=$(resDir)/values-zh-rCN/strings.xml
-release: #opencc-data 
-	style-lint
+release: opencc-data style-lint
 	./gradlew assembleRelease
 
 install: release
