@@ -28,7 +28,7 @@ object SchemaManager {
         if (!this::visibleSwitches.isInitialized || visibleSwitches.isEmpty()) return // 無方案
         visibleSwitches.forEach { s ->
             s.enabled = if (s.options.isNullOrEmpty()) { // 只有单 Rime 运行时选项的开关，开关名即选项名，标记其启用状态
-                Rime.getRimeOption(s.name!!).compareTo(false)
+                if (Rime.getRimeOption(s.name!!)) 1 else 0
             } else { // 带有一系列 Rime 运行时选项的开关，找到启用的选项并标记
                 // 将启用状态标记为此选项的索引值，方便切换时直接从选项列表中获取
                 s.options.indexOfFirst { Rime.getRimeOption(it) }
