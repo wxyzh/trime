@@ -44,18 +44,22 @@ class AboutFragment : PaddingPreferenceFragment() {
             get<Preference>("about__librime_version")?.apply {
                 val version = Rime.getLibrimeVersion()
                 summary = version
-                intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.withAppendedPath(intent?.data, "commits/$version"),
-                )
+                intent = intent?.let {
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.withAppendedPath(it.data, "commits/$version"),
+                    )
+                }
             }
             get<Preference>("about__opencc_version").apply {
                 val version = OpenCCDictManager.getOpenCCVersion()
                 summary = version
-                intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.withAppendedPath(intent?.data, "commits/$version"),
-                )
+                intent = intent?.let {
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.withAppendedPath(it.data, "commits/$version"),
+                    )
+                }
             }
             get<Preference>("pref_trime_custom_qq")
                 ?.hidden()
