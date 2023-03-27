@@ -129,7 +129,7 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
         "y" to 0x0079 to "KEYCODE_Y", /* U+0079 LATIN SMALL LETTER Y */
         "z" to 0x007a to "KEYCODE_Z", /* U+007A LATIN SMALL LETTER Z */
         "braceleft" to 0x007b to KeyEvent.KEYCODE_BRACELEFT, /* U+007B LEFT CURLY BRACKET */
-        "bar" 0x007c to KeyEvent.KEYCODE_BAR, /* U+007C VERTICAL LINE */
+        "bar" to 0x007c to KeyEvent.KEYCODE_BAR, /* U+007C VERTICAL LINE */
         "braceright" to 0x007d to KeyEvent.KEYCODE_BRACERIGHT, /* U+007D RIGHT CURLY BRACKET */
         "asciitilde" to 0x007e to KeyEvent.KEYCODE_ASCIITILDE, /* U+007E TILDE */
 
