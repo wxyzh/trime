@@ -36,12 +36,12 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
 
     private val pairs: List<KeyPair> = listOf(
         "space" to 0x0020 to "KEYCODE_SPACE", /* U+0020 SPACE */
-        "exclam" to 0x0021 to KEYCODE_EXCLAM, /* U+0021 EXCLAMATION MARK */
-        "quotedbl" to 0x0022 to KEYCODE_QUOTEDBL, /* U+0022 QUOTATION MARK */
+        "exclam" to 0x002, /* U+0021 EXCLAMATION MARK */
+        "quotedbl" to 0x0022, /* U+0022 QUOTATION MARK */
         "numbersign" to 0x0023 to "KEYCODE_POUND", /* U+0023 NUMBER SIGN */
-        "dollar" to 0x0024 to KEYCODE_DOLLAR, /* U+0024 DOLLAR SIGN */
-        "percent" to 0x0025 to KEYCODE_PERCENT, /* U+0025 PERCENT SIGN */
-        "ampersand" to 0x0026 to KEYCODE_AMPERSAND, /* U+0026 AMPERSAND */
+        "dollar" to 0x0024, /* U+0024 DOLLAR SIGN */
+        "percent" to 0x0025, /* U+0025 PERCENT SIGN */
+        "ampersand" to 0x0026, /* U+0026 AMPERSAND */
         "apostrophe" to 0x0027 to "KEYCODE_APOSTROPHE", /* U+0027 APOSTROPHE */
 //            0x0027 to KeyEvent.KEYCODE_QUOTERIGHT, /* deprecated */
 //            0x0028 to KeyEvent.KEYCODE_PARENLEFT, /* U+0028 LEFT PARENTHESIS */
@@ -62,12 +62,12 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
         "7" to 0x0037 to "KEYCODE_7", /* U+0037 DIGIT SEVEN */
         "8" to 0x0038 to "KEYCODE_8", /* U+0038 DIGIT EIGHT */
         "9" to 0x0039 to "KEYCODE_9", /* U+0039 DIGIT NINE */
-        "PARENTHESIS" to 0x003a to KEYCODE_COLON, /* U+003A COLON */
+        "PARENTHESIS" to 0x003a, /* U+003A COLON */
         "semicolon" to 0x003b to "KEYCODE_SEMICOLON", /* U+003B SEMICOLON */
-        "less" to 0x003c to KEYCODE_LESS, /* U+003C LESS-THAN SIGN */
+        "less" to 0x003c, /* U+003C LESS-THAN SIGN */
         "equal" to 0x003d to "KEYCODE_EQUALS", /* U+003D EQUALS SIGN */
-        "greater" to 0x003e to KEYCODE_GREATER, /* U+003E GREATER-THAN SIGN */
-        "question" to 0x003f to KEYCODE_QUESTION, /* U+003F QUESTION MARK */
+        "greater" to 0x003e, /* U+003E GREATER-THAN SIGN */
+        "question" to 0x003f, /* U+003F QUESTION MARK */
         "at" to 0x0040 to "KEYCODE_AT", /* U+0040 COMMERCIAL AT */
         "A" to 0x0041 to "KEYCODE_A", /* U+0041 LATIN CAPITAL LETTER A */
         "B" to 0x0042 to "KEYCODE_B", /* U+0042 LATIN CAPITAL LETTER B */
@@ -98,8 +98,8 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
         "bracketleft" to 0x005b to "KEYCODE_LEFT_BRACKET", /* U+005B LEFT SQUARE BRACKET */
         "backslash" to 0x005c to "KEYCODE_BACKSLASH", /* U+005C REVERSE SOLIDUS */
         "bracketright" to 0x005d to "KEYCODE_RIGHT_BRACKET", /* U+005D RIGHT SQUARE BRACKET */
-        "asciicircum" to 0x005e to KEYCODE_ASCIICIRCUM, /* U+005E CIRCUMFLEX ACCENT */
-        "underscore" to 0x005f to KEYCODE_UNDERSCORE, /* U+005F LOW LINE */
+        "asciicircum" to 0x005e, /* U+005E CIRCUMFLEX ACCENT */
+        "underscore" to 0x005f, /* U+005F LOW LINE */
         "grave" to 0x0060 to "KEYCODE_GRAVE", /* U+0060 GRAVE ACCENT */
 //            0x0060 to KeyEvent.KEYCODE_QUOTELEFT, /* deprecated */
         "a" to 0x0061 to "KEYCODE_A", /* U+0061 LATIN SMALL LETTER A */
@@ -128,10 +128,10 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
         "x" to 0x0078 to "KEYCODE_X", /* U+0078 LATIN SMALL LETTER X */
         "y" to 0x0079 to "KEYCODE_Y", /* U+0079 LATIN SMALL LETTER Y */
         "z" to 0x007a to "KEYCODE_Z", /* U+007A LATIN SMALL LETTER Z */
-        "braceleft" to 0x007b to KEYCODE_BRACELEFT, /* U+007B LEFT CURLY BRACKET */
-        "bar" to 0x007c to KEYCODE_BAR, /* U+007C VERTICAL LINE */
-        "braceright" to 0x007d to KEYCODE_BRACERIGHT, /* U+007D RIGHT CURLY BRACKET */
-        "asciitilde" to 0x007e to KEYCODE_ASCIITILDE, /* U+007E TILDE */
+        "braceleft" to 0x007b, /* U+007B LEFT CURLY BRACKET */
+        "bar" to 0x007c, /* U+007C VERTICAL LINE */
+        "braceright" to 0x007d, /* U+007D RIGHT CURLY BRACKET */
+        "asciitilde" to 0x007e, /* U+007E TILDE */
 
         "F1" to 0xffbe to "KEYCODE_F1",
         "F2" to 0xffbf to "KEYCODE_F2",
