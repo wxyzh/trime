@@ -5,12 +5,12 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asTypeName
+import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 
 private typealias RimeKeyName = String
@@ -164,8 +164,7 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
         "Page_Up" to 0xff55 to "KEYCODE_PAGE_UP",
         "Tab" to 0xff09 to "KEYCODE_TAB",
         "BackSpace" to 0xff08 to "KEYCODE_DEL", // BackSpace
-//        "Return" to 0xff0d to "KEYCODE_ENTER",
-        "KP_Enter" to 0xff8d to "KEYCODE_ENTER", // Enter
+        "Return" to 0xff0d to "KEYCODE_ENTER",
         "Escape" to 0xff1b to "KEYCODE_ESCAPE",
 
         "Up" to 0xff52 to "KEYCODE_DPAD_UP",
@@ -186,7 +185,7 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
         "KP_1" to 0xffb1 to "KEYCODE_NUMPAD_1",
         "KP_2" to 0xffb2 to "KEYCODE_NUMPAD_2",
         "KP_3" to 0xffb3 to "KEYCODE_NUMPAD_3",
-//        "KP_Enter" to 0xff8d to "KEYCODE_NUMPAD_ENTER",
+        "KP_Enter" to 0xff8d to "KEYCODE_NUMPAD_ENTER",
         "KP_0" to 0xffb0 to "KEYCODE_NUMPAD_0",
         "KP_Decimal" to 0xffae to "KEYCODE_NUMPAD_DOT",
 
@@ -216,7 +215,7 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
                 |     ${pairs.joinToString(separator = "\n|     ") { (f, code) -> "${keyName(f)} -> KeyEvent.$code" }}
                 |     else -> KeyEvent.KEYCODE_UNKNOWN
                 | }
-                """.trimMargin(),
+                """.trimMargin()
             )
             .build()
 
@@ -242,7 +241,7 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
                 }
                     |     else -> RimeKey_VoidSymbol
                     | }
-                """.trimMargin(),
+                """.trimMargin()
             )
             .build()
 
@@ -254,10 +253,10 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
             .addCode(
                 """
                 | return when (name) {
-                |     ${pairs.joinToString(separator = "\n|     ") { (f, _) -> "\"${f.first}\" -> ${keyName(f)}" }}
+                |     ${pairs.joinToString(separator = "\n|     ") { (f, _ ) -> "\"${f.first}\" -> ${keyName(f)}" }}
                 |     else -> RimeKey_VoidSymbol
                 | }
-                """.trimMargin(),
+                """.trimMargin()
             )
             .build()
 
@@ -269,10 +268,10 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
             .addCode(
                 """
                 | return when (`val`) {
-                |     ${pairs.joinToString(separator = "\n|     ") { (f, _) -> "${keyName(f)} -> \"${f.first}\"" }}
+                |     ${pairs.joinToString(separator = "\n|     ") { (f, _ ) -> "${keyName(f)} -> \"${f.first}\"" }}
                 |     else -> "VoidSymbol"
                 | }
-                """.trimMargin(),
+                """.trimMargin()
             )
             .build()
 
@@ -289,7 +288,7 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
                         .builder(
                             keyName(f),
                             Int::class,
-                            KModifier.CONST,
+                            KModifier.CONST
                         )
                         .initializer(String.format("0x%04x", `val`))
                         .build()
@@ -305,6 +304,7 @@ internal class GenKeyMappingProcessor(private val environment: SymbolProcessorEn
             .build()
         file.writeTo(environment.codeGenerator, false)
     }
+
 }
 
 class GenKeyMappingProvider : SymbolProcessorProvider {
