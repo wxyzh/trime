@@ -265,6 +265,7 @@ public class Event {
   // KeyboardEvent 从软键盘的按键keycode（可能含有mask）和mask，分离出rimekeycode和mask构成的数组
   public static int[] getRimeEvent(int code, int mask) {
     int i = RimeKeyMapping.keyCodeToVal(code);
+    if (i == 0xffffff) i = RimeKeycode.get().getRimeCode(code);
     int m = 0;
     if (hasModifier(mask, KeyEvent.META_SHIFT_ON)) m |= Rime.META_SHIFT_ON;
     if (hasModifier(mask, KeyEvent.META_CTRL_ON)) m |= Rime.META_CTRL_ON;
