@@ -265,7 +265,7 @@ public class Event {
   // KeyboardEvent 从软键盘的按键keycode（可能含有mask）和mask，分离出rimekeycode和mask构成的数组
   public static int[] getRimeEvent(int code, int mask) {
     int i = RimeKeyMapping.keyCodeToVal(code);
-    if (i == 0xffffff) {
+    if (i == 0xffffff) { // 如果不是Android keycode, 则直接使用获取rimekeycode
       String s = Keycode.keyNameOf(code);
       i = Rime.getRimeKeycodeByName(s);
     }
