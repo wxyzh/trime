@@ -104,11 +104,11 @@ android {
             signingConfig = signingConfigs.getByName("release")
 
             resValue("string", "trime_app_name", "@string/app_name_release")
-            externalNativeBuild {
-                cmake {
-                    arguments("-DCMAKE_BUILD_TYPE=Release")
-                }
-            }
+            //externalNativeBuild {
+                //cmake {
+                    //arguments("-DCMAKE_BUILD_TYPE=Release")
+                //}
+            //}
         }
         debug {
             applicationIdSuffix = ".debug"
