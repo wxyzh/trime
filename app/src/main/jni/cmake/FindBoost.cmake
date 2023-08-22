@@ -26,6 +26,7 @@ set(BOOST_INSTALLED_LIBRARIES
   "uuid"
   # for librime-charcode:
   "locale"
+  "describe"
   # dumped from ${__boost_include_libraries}:
   "array"
   "assert"
@@ -88,3 +89,4 @@ endforeach()
 
 # for librime-charcode
 set(Boost_LOCALE_LIBRARIES Boost::locale)
+set(Boost_DESCRIBE_LIBRARIES Boost::describe)
