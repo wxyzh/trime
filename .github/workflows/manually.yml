@@ -1,7 +1,7 @@
 name: Manually
 on: workflow_dispatch
 env:
-  CI_NAME: Commit CI
+  CI_NAME: Release CI
 jobs:
   build:
     runs-on: ubuntu-latest
