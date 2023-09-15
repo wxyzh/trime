@@ -78,7 +78,7 @@ android {
         setProperty("archivesBaseName", "trime-$versionName")
         buildConfigField("String", "BUILD_GIT_HASH", "\"${gitHashShort}\"")
         buildConfigField("String", "BUILD_GIT_REPO", "\"${gitRemoteUrl}\"")
-        buildConfigField("String", "BUILD_VERSION_NAME", "\"${gitVersionName}\"")
+        buildConfigField("String", "BUILD_VERSION_NAME", "\"${defaultConfig.versionName}\"")
         buildConfigField("String", "BUILD_INFO", "\"${buildInfo()}\"")
     }
 
