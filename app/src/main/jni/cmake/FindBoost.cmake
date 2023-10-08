@@ -11,8 +11,6 @@ set(BOOST_INSTALLED_LIBRARIES
   "any"
   "crc"
   "date_time"
-  "dll"
-  "filesystem"
   "format"
   "interprocess"
   "iostreams"
