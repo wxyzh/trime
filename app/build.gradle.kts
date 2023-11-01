@@ -37,7 +37,7 @@ fun envOrDefault(env: String, default: () -> String): String {
 val gitUserOrCIName = envOrDefault("CI_NAME") {
     exec("git config user.name")
 }
-val gitVersionName = exec("git describe --tags --long --always")
+val gitVersionName = "3.2.15"
 val gitHashShort = exec("git rev-parse --short HEAD")
 val gitWorkingOrCIBranch = envOrDefault("CI_BRANCH") {
     exec("git symbolic-ref --short HEAD")
