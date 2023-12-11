@@ -144,13 +144,12 @@ public class Trime extends LifecycleInputMethodService {
           if (mCandidateRoot == null || mCandidateRoot.getWindowToken() == null) return;
           if (!isPopupWindowEnabled) return;
 
-          final int minX = popupMarginH;
-          final int minY = popupMargin;
-
           DisplayMetrics displayMetrics = new DisplayMetrics();
           getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-          final int maxX = displayMetrics.widthPixels - mPopupWindow.getWidth() - minX;
-          final int maxY = displayMetrics.heightPixels - mPopupWindow.getHeight() - minY;
+          final int minX = popupMarginH;
+          final int maxX = displayMetrics.widthPixels - mPopupWindow.getWidth() - popupMarginH;
+          final int minY = popupMargin + BarUtils.getStatusBarHeight() + mPopupWindow.getHeight();
+          final int maxY = displayMetrics.heightPixels - popupMargin - mPopupWindow.getHeight();
 
           int x = minX, y = minY;
           if (isWinFixed() || !isCursorUpdated) {
@@ -177,31 +176,35 @@ public class Trime extends LifecycleInputMethodService {
           } else {
             switch (popupWindowPos) {
               case LEFT:
-                x = (int) mPopupRectF.left;
-                y = (int) mPopupRectF.bottom + popupMargin;
-                break;
               case LEFT_UP:
                 x = (int) mPopupRectF.left;
-                y = (int) mPopupRectF.top - mPopupWindow.getHeight() - popupMargin;
                 break;
               case RIGHT:
-                x = (int) mPopupRectF.right;
-                y = (int) mPopupRectF.bottom + popupMargin;
-                break;
               case RIGHT_UP:
               default:
                 x = (int) mPopupRectF.right;
-                y = (int) mPopupRectF.top - mPopupWindow.getHeight() - popupMargin;
+            }
+            x = Math.max(minX, x);
+            x = Math.min(maxX, x);
+
+            switch (popupWindowPos) {
+              case RIGHT_UP:
+              case LEFT_UP:
+                y =
+                    ((int) mPopupRectF.top < minY)
+                        ? (int) mPopupRectF.bottom + popupMargin
+                        : (int) mPopupRectF.top - mPopupWindow.getHeight() - popupMargin;
                 break;
+              case RIGHT:
+              case LEFT:
+              default:
+                y =
+                    ((int) mPopupRectF.bottom > maxY)
+                        ? (int) mPopupRectF.top - mPopupWindow.getHeight() - popupMargin
+                        : (int) mPopupRectF.bottom + popupMargin;
             }
           }
-
-          // 只要修正一次就可以，别让悬浮窗超出了屏幕界限
-          x = Math.max(minX, x);
-          x = Math.min(maxX, x);
           y -= BarUtils.getStatusBarHeight(); // 不包含狀態欄
-          y = Math.max(minY, y);
-          y = Math.min(maxY, y);
 
           if (!mPopupWindow.isShowing()) {
             mPopupWindow.showAtLocation(mCandidateRoot, Gravity.START | Gravity.TOP, x, y);
@@ -694,17 +697,20 @@ public class Trime extends LifecycleInputMethodService {
     super.onUpdateSelection(
         oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd);
     if ((candidatesEnd != -1) && ((newSelStart != candidatesEnd) || (newSelEnd != candidatesEnd))) {
-      // 移動光標時，更新候選區
-      if ((newSelEnd < candidatesEnd) && (newSelEnd >= candidatesStart)) {
-        final int n = newSelEnd - candidatesStart;
-        Rime.setCaretPos(n);
-        updateComposing();
-      }
+      // 移動光標時，commit
+      getCurrentInputConnection().finishComposingText();
+      performEscape();
     }
     if ((candidatesStart == -1 && candidatesEnd == -1) && (newSelStart == 0 && newSelEnd == 0)) {
       // 上屏後，清除候選區
       performEscape();
     }
+    if (candidatesEnd < newSelEnd || candidatesStart > newSelStart) {
+      // 點擊在"輸入文字"外，上屏
+      getCurrentInputConnection().finishComposingText();
+      performEscape();
+    }
+
     // Update the caps-lock status for the current cursor position.
     dispatchCapsStateToInputView();
   }
@@ -909,7 +915,13 @@ public class Trime extends LifecycleInputMethodService {
     return Rime.isComposing();
   }
 
+  /**
+   * Commit the current composing text together with the new text
+   *
+   * @param text the new text to be committed
+   */
   public void commitText(String text) {
+    getCurrentInputConnection().finishComposingText();
     activeEditorInstance.commitText(text, true);
   }
 
@@ -1243,7 +1255,7 @@ public class Trime extends LifecycleInputMethodService {
   }
 
   /** 模擬PC鍵盤中Esc鍵的功能：清除輸入的編碼和候選項 */
-  private void performEscape() {
+  public void performEscape() {
     if (isComposing()) textInputManager.onKey(KeyEvent.KEYCODE_ESCAPE, 0);
   }
 
