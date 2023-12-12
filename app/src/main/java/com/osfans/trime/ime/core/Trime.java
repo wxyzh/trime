@@ -19,7 +19,6 @@
 package com.osfans.trime.ime.core;
 
 import static android.graphics.Color.parseColor;
-import static splitties.systemservices.SystemServicesKt.getWindowManager;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
@@ -38,7 +37,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -82,6 +80,7 @@ import com.osfans.trime.ime.text.Candidate;
 import com.osfans.trime.ime.text.Composition;
 import com.osfans.trime.ime.text.ScrollView;
 import com.osfans.trime.ime.text.TextInputManager;
+import com.osfans.trime.ime.util.UiUtil;
 import com.osfans.trime.util.DimensionsKt;
 import com.osfans.trime.util.ShortcutUtils;
 import com.osfans.trime.util.StringUtils;
@@ -143,21 +142,23 @@ public class Trime extends LifecycleInputMethodService {
         public void run() {
           if (mCandidateRoot == null || mCandidateRoot.getWindowToken() == null) return;
           if (!isPopupWindowEnabled) return;
-
-          DisplayMetrics displayMetrics = new DisplayMetrics();
-          getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+          int x = 0, y = 0;
+          final int[] candidateLocation = new int[2];
+          mCandidateRoot.getLocationOnScreen(candidateLocation);
           final int minX = popupMarginH;
-          final int maxX = displayMetrics.widthPixels - mPopupWindow.getWidth() - popupMarginH;
-          final int minY = popupMargin + BarUtils.getStatusBarHeight() + mPopupWindow.getHeight();
-          final int maxY = displayMetrics.heightPixels - popupMargin - mPopupWindow.getHeight();
-
-          int x = minX, y = minY;
+          final int minY = popupMargin;
+          final int maxX = mCandidateRoot.getWidth() - mPopupWindow.getWidth() - minX;
+          final int maxY = candidateLocation[1] - mPopupWindow.getHeight() - minY;
           if (isWinFixed() || !isCursorUpdated) {
+            // setCandidatesViewShown(true);
             switch (popupWindowPos) {
-              case TOP_LEFT:
-                break;
               case TOP_RIGHT:
                 x = maxX;
+                y = minY;
+                break;
+              case TOP_LEFT:
+                x = minX;
+                y = minY;
                 break;
               case BOTTOM_RIGHT:
                 x = maxX;
@@ -170,10 +171,12 @@ public class Trime extends LifecycleInputMethodService {
               case FIXED:
               case BOTTOM_LEFT:
               default:
+                x = minX;
                 y = maxY;
                 break;
             }
           } else {
+            // setCandidatesViewShown(false);
             switch (popupWindowPos) {
               case LEFT:
               case LEFT_UP:
@@ -181,28 +184,27 @@ public class Trime extends LifecycleInputMethodService {
                 break;
               case RIGHT:
               case RIGHT_UP:
-              default:
                 x = (int) mPopupRectF.right;
-            }
-            x = Math.max(minX, x);
-            x = Math.min(maxX, x);
-
-            switch (popupWindowPos) {
-              case RIGHT_UP:
-              case LEFT_UP:
-                y =
-                    ((int) mPopupRectF.top < minY)
-                        ? (int) mPopupRectF.bottom + popupMargin
-                        : (int) mPopupRectF.top - mPopupWindow.getHeight() - popupMargin;
                 break;
-              case RIGHT:
-              case LEFT:
               default:
-                y =
-                    ((int) mPopupRectF.bottom > maxY)
-                        ? (int) mPopupRectF.top - mPopupWindow.getHeight() - popupMargin
-                        : (int) mPopupRectF.bottom + popupMargin;
+                Timber.wtf("UNREACHABLE BRANCH");
             }
+            x = Math.min(maxX, x);
+            x = Math.max(minX, x);
+            switch (popupWindowPos) {
+              case LEFT:
+              case RIGHT:
+                y = (int) mPopupRectF.bottom + popupMargin;
+                break;
+              case LEFT_UP:
+              case RIGHT_UP:
+                y = (int) mPopupRectF.top - mPopupWindow.getHeight() - popupMargin;
+                break;
+              default:
+                Timber.wtf("UNREACHABLE BRANCH");
+            }
+            y = Math.min(maxY, y);
+            y = Math.max(minY, y);
           }
           y -= BarUtils.getStatusBarHeight(); // 不包含狀態欄
 
@@ -237,9 +239,8 @@ public class Trime extends LifecycleInputMethodService {
   public Trime() {
     try {
       self = this;
-      textInputManager = TextInputManager.Companion.getInstance();
     } catch (Exception e) {
-      e.fillInStackTrace();
+      Timber.e(e);
     }
   }
 
@@ -358,12 +359,13 @@ public class Trime extends LifecycleInputMethodService {
       //  and lead to a crash loop
       try {
         Timber.d("onCreate");
+        textInputManager = TextInputManager.Companion.getInstance(UiUtil.INSTANCE.isDarkMode(this));
         activeEditorInstance = new EditorInstance(this);
         inputFeedbackManager = new InputFeedbackManager(this);
         liquidKeyboard = new LiquidKeyboard(this);
         restartSystemStartTimingSync();
       } catch (Exception e) {
-        e.printStackTrace();
+        Timber.e(e);
         super.onCreate();
         return;
       }
@@ -372,7 +374,7 @@ public class Trime extends LifecycleInputMethodService {
         listener.onCreate();
       }
     } catch (Exception e) {
-      e.fillInStackTrace();
+      Timber.e(e);
     }
   }
 
@@ -384,10 +386,11 @@ public class Trime extends LifecycleInputMethodService {
    */
   public boolean setDarkMode(boolean darkMode) {
     if (darkMode != this.darkMode) {
-      Timber.d("setDarkMode: %s", darkMode);
+      Timber.d("Dark mode changed: %s", darkMode);
       this.darkMode = darkMode;
       return true;
     }
+    Timber.d("Dark mode not changed: %s", darkMode);
     return false;
   }
 
@@ -549,8 +552,9 @@ public class Trime extends LifecycleInputMethodService {
     inputRootBinding.symbol.symbolInput.setVisibility(View.GONE);
     inputRootBinding.main.mainInput.setVisibility(View.VISIBLE);
     loadConfig();
-    final Theme theme = Theme.get();
-    theme.initCurrentColors();
+    updateDarkMode();
+    final Theme theme = Theme.get(darkMode);
+    theme.initCurrentColors(darkMode);
     SoundThemeManager.switchSound(theme.colors.getString("sound"));
     KeyboardSwitcher.newOrReset();
     resetCandidate();
@@ -726,6 +730,9 @@ public class Trime extends LifecycleInputMethodService {
     Timber.e("onCreateInputView()");
     // 初始化键盘布局
     super.onCreateInputView();
+    updateDarkMode();
+    Theme.get(darkMode).initCurrentColors(darkMode);
+
     inputRootBinding = InputRootBinding.inflate(LayoutInflater.from(this));
     mainKeyboardView = inputRootBinding.main.mainKeyboardView;
 
@@ -752,7 +759,6 @@ public class Trime extends LifecycleInputMethodService {
       assert inputRootBinding != null;
       listener.onInitializeInputUi(inputRootBinding);
     }
-    Theme.get().initCurrentColors();
     loadBackground();
 
     KeyboardSwitcher.newOrReset();
@@ -772,19 +778,19 @@ public class Trime extends LifecycleInputMethodService {
     Timber.d("onStartInput: restarting=%s", restarting);
   }
 
+  private boolean updateDarkMode() {
+    boolean isDarkMode = UiUtil.INSTANCE.isDarkMode(this);
+
+    return setDarkMode(isDarkMode);
+  }
+
   @Override
   public void onStartInputView(EditorInfo attribute, boolean restarting) {
     Timber.d("onStartInputView: restarting=%s", restarting);
     editorInfo = attribute;
-    if (getPrefs().getThemeAndColor().getAutoDark()) {
-      int nightModeFlags =
-          getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-      if (setDarkMode(nightModeFlags == Configuration.UI_MODE_NIGHT_YES)) {
-        Timber.i("dark mode changed");
-        initKeyboardDarkMode(darkMode);
-      } else Timber.i("dark mode not changed");
-    } else {
-      Timber.i("auto dark off");
+
+    if (updateDarkMode()) {
+      initKeyboardDarkMode(darkMode);
     }
 
     inputFeedbackManager.resumeSoundPool();
