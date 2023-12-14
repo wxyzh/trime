@@ -15,6 +15,7 @@ import com.osfans.trime.data.theme.Theme
 import com.osfans.trime.data.theme.ThemeManager
 import com.osfans.trime.ime.core.Trime
 import com.osfans.trime.ime.symbol.TabManager
+import com.osfans.trime.ime.util.UiUtil
 import com.osfans.trime.ui.components.CoroutineChoiceDialog
 import com.osfans.trime.util.ProgressBarDialogIndeterminate
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +42,8 @@ suspend fun Context.themePicker(
         onOKButton {
             with(items[checkedItem].toString()) {
                 ThemeManager.switchTheme(if (this == "trime") this else "$this.trime")
-                Theme.get().init()
+                Theme.get(UiUtil.isDarkMode(this@themePicker))
+                    .init(UiUtil.isDarkMode(this@themePicker))
                 TabManager.updateSelf()
             }
             launch {
@@ -63,7 +65,7 @@ suspend fun Context.colorPicker(
             items = all.map { it.second }.toTypedArray()
             val current = prefs.themeAndColor.selectedColor
             val schemeIds = all.map { it.first }
-            checkedItem = schemeIds.indexOf(current)
+            checkedItem = schemeIds.indexOf(current).takeIf { it > -1 } ?: 1
         }
         postiveDispatcher = Dispatchers.Default
         onOKButton {
