@@ -7,6 +7,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-22.04
@@ -25,6 +26,11 @@ jobs:
           echo ${GITHUB_REF#refs/*/}
           echo CI_BRANCH=${GITHUB_REF#refs/*/} >> $GITHUB_ENV
 
+      - name: Install macOS utils
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          brew install coreutils clang-format
+
       - name: Calculate JNI cache hash
         id: cache-hash
         shell: bash
@@ -35,7 +41,7 @@ jobs:
         id: jni-cache
         with:
           path: "app/prebuilt"
-          key: jni-debug-${{ steps.cache-hash.outputs.hash }}
+          key: ${{ matrix.os }}-trime-jni-debug-${{ steps.cache-hash.outputs.hash }}
 
       - name: Fetch submodules
         if: ${{ !steps.jni-cache.outputs.cache-hit }}
@@ -52,16 +58,14 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
         
-      - name: Check code format
+      - name: Check code style
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          ./gradlew spotlessCheck
+          make style-lint
 
       # `make debug` works not well on Windows
-      - name: Build Debug APK
+      - name: Build debug Trime
         run: |
           ./gradlew :app:assembleDebug
 
