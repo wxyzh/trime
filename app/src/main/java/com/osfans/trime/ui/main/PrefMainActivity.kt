@@ -153,7 +153,7 @@ class PrefMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun deploy()  {
+    private fun deploy() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 Runtime.getRuntime().exec(arrayOf("logcat", "-c"))
