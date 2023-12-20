@@ -1,7 +1,6 @@
 package com.osfans.trime.util
 
 import android.content.Context
-import android.view.ContextThemeWrapper
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.LinearLayout
@@ -9,7 +8,6 @@ import android.widget.ProgressBar
 import androidx.annotation.StringRes
 import androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog_Alert
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.blankj.utilcode.util.ToastUtils
 import com.osfans.trime.R
@@ -22,7 +20,7 @@ import kotlinx.coroutines.withContext
 
 // Adapted from https://github.com/fcitx5-android/fcitx5-android/blob/e37f5513239bab279a9e58cf0c9b163e0dbf5efb/app/src/main/java/org/fcitx/fcitx5/android/ui/common/Preset.kt#L60
 @Suppress("FunctionName")
-fun Context.ProgressBarDialogIndeterminate(
+fun Context.progressBarDialogIndeterminate(
     @StringRes titleId: Int,
 ): AlertDialog.Builder {
     return AlertDialog.Builder(this, Theme_AppCompat_DayNight_Dialog_Alert)
@@ -32,7 +30,7 @@ fun Context.ProgressBarDialogIndeterminate(
                 orientation = LinearLayout.VERTICAL
                 addView(
                     ProgressBar(
-                        this@ProgressBarDialogIndeterminate,
+                        this@progressBarDialogIndeterminate,
                         null,
                         android.R.attr.progressBarStyleHorizontal,
                     ).apply {
@@ -62,7 +60,7 @@ fun LifecycleCoroutineScope.withLoadingDialog(
     @StringRes titleId: Int = R.string.loading,
     action: suspend () -> Unit,
 ) {
-    val loading = context.ProgressBarDialogIndeterminate(titleId).create()
+    val loading = context.progressBarDialogIndeterminate(titleId).create()
     val job =
         launch {
             delay(thresholds)

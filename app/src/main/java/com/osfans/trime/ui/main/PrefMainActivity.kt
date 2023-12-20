@@ -30,8 +30,8 @@ import com.osfans.trime.databinding.ActivityPrefBinding
 import com.osfans.trime.ime.core.RimeWrapper
 import com.osfans.trime.ime.core.Status
 import com.osfans.trime.ui.setup.SetupActivity
-import com.osfans.trime.util.ProgressBarDialogIndeterminate
 import com.osfans.trime.util.applyTranslucentSystemBars
+import com.osfans.trime.util.progressBarDialogIndeterminate
 import com.osfans.trime.util.rimeActionWithResultDialog
 import kotlinx.coroutines.launch
 
@@ -115,7 +115,7 @@ class PrefMainActivity : AppCompatActivity() {
                         Status.IN_PROGRESS -> {
                             loadingDialog?.dismiss()
                             loadingDialog =
-                                ProgressBarDialogIndeterminate(R.string.deploy_progress).create().apply {
+                                progressBarDialogIndeterminate(R.string.deploy_progress).create().apply {
                                     show()
                                 }
                         }
