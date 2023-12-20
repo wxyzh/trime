@@ -1,6 +1,7 @@
 package com.osfans.trime.util
 
 import android.content.Context
+import android.view.ContextThemeWrapper
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.LinearLayout
@@ -8,6 +9,7 @@ import android.widget.ProgressBar
 import androidx.annotation.StringRes
 import androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog_Alert
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.blankj.utilcode.util.ToastUtils
 import com.osfans.trime.R
@@ -83,7 +85,7 @@ suspend fun Context.briefResultLogDialog(
     val log =
         withContext(Dispatchers.IO) {
             Runtime.getRuntime()
-                .exec(arrayOf("logcat", "-d", "-v", "brief", "-s", "$tag:$priority"))
+                .exec(arrayOf("logcat", "-d", "-v", "time", "-s", "$tag:$priority"))
                 .inputStream
                 .bufferedReader()
                 .readLines()
@@ -105,5 +107,27 @@ suspend fun Context.briefResultLogDialog(
             .show()
     } else {
         ToastUtils.showShort(R.string.setup__done)
+    }
+}
+
+suspend fun Context.rimeActionWithResultDialog(
+    tag: String,
+    priority: String,
+    thresholds: Int,
+    action: suspend () -> Boolean,
+) {
+    withContext(Dispatchers.Main.immediate) {
+        withContext(Dispatchers.IO) {
+            Runtime.getRuntime().exec(arrayOf("logcat", "-c"))
+        }
+        val result =
+            withContext(Dispatchers.IO) {
+                action()
+            }
+        if (result) {
+            briefResultLogDialog(tag, priority, thresholds)
+        } else {
+            ToastUtils.showLong("Failed")
+        }
     }
 }
