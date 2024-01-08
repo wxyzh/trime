@@ -22,7 +22,6 @@ import android.graphics.drawable.GradientDrawable
 import androidx.core.math.MathUtils
 import com.osfans.trime.core.Rime
 import com.osfans.trime.data.AppPrefs
-import com.osfans.trime.data.DataManager.sharedDataDir
 import com.osfans.trime.data.DataManager.userDataDir
 import com.osfans.trime.data.schema.SchemaManager
 import com.osfans.trime.data.sound.SoundThemeManager
@@ -87,7 +86,6 @@ class Theme private constructor(isDarkMode: Boolean) {
     init {
         self = this
         ThemeManager.init()
-        Rime.getInstance(!sharedDataDir.exists())
         init(isDarkMode)
         Timber.d("Setting sound from color ...")
         SoundThemeManager.switchSound(colors.getString("sound"))
@@ -238,16 +236,24 @@ class Theme private constructor(isDarkMode: Boolean) {
         ): Drawable? {
             if (key == null) return null
             val o = theme.currentColors[key]
+            var color = o
             if (o is String) {
-                val bitmap = bitmapDrawable(o)
-                if (bitmap != null) {
-                    if (!alphaKey.isNullOrEmpty() && theme.style.getObject(alphaKey) != null) {
-                        bitmap.alpha = MathUtils.clamp(theme.style.getInt(alphaKey), 0, 255)
+                if (isImageString(o)) {
+                    val bitmap = bitmapDrawable(o)
+                    if (bitmap != null) {
+                        if (!alphaKey.isNullOrEmpty() && theme.style.getObject(alphaKey) != null) {
+                            bitmap.alpha = MathUtils.clamp(theme.style.getInt(alphaKey), 0, 255)
+                        }
+                        return bitmap
                     }
-                    return bitmap
+                } else {
+                    // it is html hex color string (e.g. #ff0000)
+                    color = ColorUtils.parseColor(o)
                 }
-            } else if (o is Int) {
-                val gradient = GradientDrawable().apply { setColor(o) }
+            }
+
+            if (color is Int) {
+                val gradient = GradientDrawable().apply { setColor(color) }
                 if (roundCornerKey.isNotEmpty()) {
                     gradient.cornerRadius = theme.style.getFloat(roundCornerKey)
                 }
@@ -303,6 +309,8 @@ class Theme private constructor(isDarkMode: Boolean) {
                         ?: throw IllegalStateException("The default keyboard definition is missing!")
                 if (defaultMap.containsKey("import_preset")) {
                     return defaultMap["import_preset"] as? String ?: "default"
+                } else {
+                    return "default"
                 }
             }
             return remapped
